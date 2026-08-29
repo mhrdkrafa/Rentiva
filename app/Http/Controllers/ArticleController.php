@@ -6,6 +6,8 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
+use App\Services\SeoService;
+
 class ArticleController extends Controller
 {
     public function index(Request $request): View
@@ -43,12 +45,14 @@ class ArticleController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        $seo = SeoService::article($article);
+
         $relatedArticles = Article::published()
             ->where('id', '!=', $article->id)
             ->where('category', $article->category)
             ->limit(3)
             ->get();
 
-        return view('articles.show', compact('article', 'relatedArticles'));
+        return view('articles.show', compact('article', 'relatedArticles', 'seo'));
     }
 }

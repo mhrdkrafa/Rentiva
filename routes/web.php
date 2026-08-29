@@ -25,9 +25,15 @@ use App\Http\Controllers\Tenant\IssueController as TenantIssueController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
 use App\Http\Controllers\Tenant\ReviewController as TenantReviewController;
+use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+
+// Dynamic XML Sitemap & Robots.txt
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', RobotsController::class)->name('robots');
 
 // Public Marketplace Catalog Routes
 Route::get('/properties', [PublicPropertyController::class, 'index'])->name('properties.index');

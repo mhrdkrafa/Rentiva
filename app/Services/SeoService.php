@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Article;
+use App\Models\Property;
 use App\Support\SeoData;
 
 class SeoService
@@ -55,13 +57,15 @@ class SeoService
         ?string $url = null,
         ?int $minPrice = null,
         ?string $city = null,
-        ?string $address = null
+        ?string $address = null,
+        ?float $rating = 5.0,
+        int $reviewsCount = 0
     ): SeoData {
-        $formattedTitle = $title . ' — Sewa Properti di ' . ($city ?? 'Rentiva');
-        
+        $formattedTitle = $title . ' — Sewa Kost di ' . ($city ?? 'Rentiva');
+
         $schema = [
             '@context' => 'https://schema.org',
-            '@type' => 'Accommodation',
+            '@type' => 'LodgingBusiness',
             'name' => $title,
             'description' => $description,
             'url' => $url ?? url()->current(),
@@ -89,10 +93,60 @@ class SeoService
             ];
         }
 
+        if ($reviewsCount > 0) {
+            $schema['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => (string) number_format($rating, 1),
+                'reviewCount' => (string) $reviewsCount,
+                'bestRating' => '5',
+                'worstRating' => '1',
+            ];
+        }
+
         return new SeoData(
             title: $formattedTitle,
             description: $description,
             image: $imageUrl,
+            schema: $schema
+        );
+    }
+
+    /**
+     * Generate SEO metadata and Schema.org for educational articles.
+     */
+    public static function article(Article $article): SeoData
+    {
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => $article->title,
+            'description' => $article->excerpt,
+            'image' => $article->cover_image_url,
+            'datePublished' => $article->published_at?->toIso8601String() ?? $article->created_at->toIso8601String(),
+            'dateModified' => $article->updated_at->toIso8601String(),
+            'author' => [
+                '@type' => 'Person',
+                'name' => $article->author->name ?? 'Tim Editorial Rentiva',
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Rentiva',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => url('/images/logo.png'),
+                ],
+            ],
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => route('articles.show', $article->slug),
+            ],
+        ];
+
+        return new SeoData(
+            title: ($article->meta_title ?? $article->title) . ' — Rentiva',
+            description: $article->meta_description ?? $article->excerpt ?? 'Artikel panduan dan tips sewa kost.',
+            image: $article->cover_image_url,
+            canonical: route('articles.show', $article->slug),
             schema: $schema
         );
     }

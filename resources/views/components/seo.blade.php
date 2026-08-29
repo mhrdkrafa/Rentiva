@@ -1,12 +1,29 @@
 @props([
-    'title' => 'Rentiva — Marketplace Sewa Kamar, Kost & Properti Terpercaya',
-    'description' => 'Temukan ribuan kost, apartemen, dan rumah sewa terbaik dengan harga transparan dan fasilitas lengkap di Rentiva.',
-    'canonical' => url()->current(),
-    'image' => asset('images/og-rentiva.png'),
+    'data' => null,
+    'title' => null,
+    'description' => null,
+    'canonical' => null,
+    'image' => null,
     'type' => 'website',
     'robots' => 'index, follow',
     'schema' => null,
 ])
+
+@php
+    if ($data instanceof \App\Support\SeoData) {
+        $title = $title ?? $data->title;
+        $description = $description ?? $data->description;
+        $canonical = $canonical ?? $data->canonical;
+        $image = $image ?? $data->image;
+        $robots = $robots ?? ($data->robots ?? 'index, follow');
+        $schema = $schema ?? $data->schema;
+    }
+
+    $title = $title ?? 'Rentiva — Marketplace Sewa Kamar, Kost & Properti Terpercaya';
+    $description = $description ?? 'Temukan ribuan kost, apartemen, dan rumah sewa terbaik dengan harga transparan dan fasilitas lengkap di Rentiva.';
+    $canonical = $canonical ?? url()->current();
+    $image = $image ?? asset('images/og-rentiva.png');
+@endphp
 
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $description }}">
@@ -30,6 +47,6 @@
 
 @if($schema)
 <script type="application/ld+json">
-{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) !!}
 </script>
 @endif

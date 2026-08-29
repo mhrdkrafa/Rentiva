@@ -63,7 +63,9 @@ class PropertyController extends Controller
             url: route('properties.show', $property->slug),
             minPrice: $property->min_monthly_price ?? 0,
             city: $property->location->name,
-            address: $property->public_location_precision === 'exact' ? $property->address : $property->location->name
+            address: $property->public_location_precision === 'exact' ? $property->address : $property->location->name,
+            rating: $property->average_rating,
+            reviewsCount: $property->reviews_count
         );
 
         $similarProperties = Property::where('status', PropertyStatus::PUBLISHED)

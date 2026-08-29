@@ -137,15 +137,15 @@
 - [x] Owner responses.
 
 ## Phase 12 — SEO & Performance
-- [ ] Sitemap.
-- [ ] Canonical URLs.
-- [ ] Open Graph.
-- [ ] Structured data.
-- [ ] Image optimization.
-- [ ] Cache settings.
-- [ ] Cache homepage.
-- [ ] Query optimization.
-- [ ] Queue slow work.
+- [x] Sitemap.
+- [x] Canonical URLs.
+- [x] Open Graph.
+- [x] Structured data.
+- [x] Image optimization.
+- [x] Cache settings.
+- [x] Cache homepage.
+- [x] Query optimization.
+- [x] Queue slow work.
 
 ## Phase 13 — Security
 - [ ] Authorization audit.
