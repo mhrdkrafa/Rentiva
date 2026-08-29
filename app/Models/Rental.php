@@ -60,6 +60,11 @@ class Rental extends Model
         return $this->hasMany(RentalIssue::class)->latest();
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereIn('status', [RentalStatus::PENDING_MOVE_IN, RentalStatus::ACTIVE]);

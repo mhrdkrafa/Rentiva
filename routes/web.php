@@ -7,6 +7,7 @@ use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\Owner\AvailabilityController as OwnerAvailabilityController;
 use App\Http\Controllers\Owner\BookingController as OwnerBookingController;
 use App\Http\Controllers\Owner\DashboardController as OwnerDashboardController;
+use App\Http\Controllers\Owner\FinanceController as OwnerFinanceController;
 use App\Http\Controllers\Owner\IssueController as OwnerIssueController;
 use App\Http\Controllers\Owner\PricingController as OwnerPricingController;
 use App\Http\Controllers\Owner\ProfileController as OwnerProfileController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Owner\UnitController as OwnerUnitController;
 use App\Http\Controllers\Tenant\BookingController as TenantBookingController;
 use App\Http\Controllers\Tenant\DashboardController as TenantDashboardController;
 use App\Http\Controllers\Tenant\FavoriteController as TenantFavoriteController;
+use App\Http\Controllers\Tenant\InvoiceController as TenantInvoiceController;
 use App\Http\Controllers\Tenant\IssueController as TenantIssueController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
@@ -58,6 +60,12 @@ Route::prefix('tenant')->name('tenant.')->group(function () {
     Route::post('/bookings', [TenantBookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{booking}', [TenantBookingController::class, 'show'])->name('bookings.show');
     Route::post('/bookings/{booking}/cancel', [TenantBookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // Invoices & Payments
+    Route::get('/invoices', [TenantInvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('/invoices/{invoice}', [TenantInvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{invoice}/checkout', [TenantInvoiceController::class, 'checkout'])->name('invoices.checkout');
+    Route::post('/invoices/{invoice}/checkout', [TenantInvoiceController::class, 'processCheckout'])->name('invoices.process-checkout');
 
     // Rental Tenancies & Digital Receipts
     Route::get('/rentals', [TenantRentalController::class, 'index'])->name('rentals.index');
@@ -118,6 +126,9 @@ Route::prefix('owner')->name('owner.')->group(function () {
     Route::get('/issues', [OwnerIssueController::class, 'index'])->name('issues.index');
     Route::get('/issues/{issue}', [OwnerIssueController::class, 'show'])->name('issues.show');
     Route::put('/issues/{issue}', [OwnerIssueController::class, 'update'])->name('issues.update');
+
+    // Finance & Income Ledger
+    Route::get('/finance', [OwnerFinanceController::class, 'index'])->name('finance');
 
     // Statistics & Performance
     Route::get('/statistics', [OwnerStatisticsController::class, 'index'])->name('statistics');

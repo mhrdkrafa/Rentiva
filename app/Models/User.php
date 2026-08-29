@@ -130,6 +130,21 @@ class User extends Authenticatable implements FilamentUser
             ->count();
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'tenant_id');
+    }
+
+    public function ownerInvoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class, 'owner_id');
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'tenant_id');
+    }
+
     /**
      * Determine if the user can access a given Filament panel.
      */

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Booking;
 
+use App\Actions\Finance\CreateInvoiceFromBookingAction;
 use App\Enums\BookingStatus;
 use App\Models\BookingRequest;
 use App\Models\User;
@@ -12,9 +13,14 @@ use Illuminate\Validation\ValidationException;
 
 class ApproveBookingRequestAction
 {
+    protected CreateInvoiceFromBookingAction $createInvoiceAction;
+
     public function __construct(
-        protected AvailabilityService $availabilityService
-    ) {}
+        protected AvailabilityService $availabilityService,
+        ?CreateInvoiceFromBookingAction $createInvoiceAction = null
+    ) {
+        $this->createInvoiceAction = $createInvoiceAction ?? app(CreateInvoiceFromBookingAction::class);
+    }
 
     public function execute(User $approver, BookingRequest $booking): BookingRequest
     {
@@ -46,6 +52,8 @@ class ApproveBookingRequestAction
                 'approved_at' => now(),
                 'expires_at' => now()->addHours(24),
             ]);
+
+            $this->createInvoiceAction->execute($lockedBooking);
 
             return $lockedBooking;
         });

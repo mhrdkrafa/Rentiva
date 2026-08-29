@@ -71,6 +71,11 @@ class BookingRequest extends Model
         return $this->belongsTo(PricePlan::class);
     }
 
+    public function invoice(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereIn('status', [

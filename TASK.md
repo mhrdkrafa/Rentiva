@@ -115,16 +115,16 @@
 - [x] Section ordering.
 
 ## Phase 10 — Finance
-- [ ] Invoices.
-- [ ] Invoice items.
-- [ ] Payments.
-- [ ] Gateway adapter.
-- [ ] Payment intent.
-- [ ] Webhook verification.
-- [ ] Idempotency.
-- [ ] Refunds.
-- [ ] Reconciliation.
-- [ ] Audit tests.
+- [x] Invoices.
+- [x] Invoice items.
+- [x] Payments.
+- [x] Gateway adapter.
+- [x] Payment intent.
+- [x] Webhook verification.
+- [x] Idempotency.
+- [x] Refunds.
+- [x] Reconciliation.
+- [x] Audit tests.
 
 ## Phase 11 — Promotions & Reviews
 - [ ] Promotions.
