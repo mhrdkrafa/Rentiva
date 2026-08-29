@@ -82,6 +82,16 @@ class Unit extends Model
         return $this->hasMany(AdditionalFee::class);
     }
 
+    public function availabilityBlocks(): HasMany
+    {
+        return $this->hasMany(AvailabilityBlock::class);
+    }
+
+    public function bookingRequests(): HasMany
+    {
+        return $this->hasMany(BookingRequest::class);
+    }
+
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('status', UnitStatus::AVAILABLE);

@@ -84,6 +84,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(PropertyManagerAssignment::class, 'manager_id');
     }
 
+    public function bookingRequests(): HasMany
+    {
+        return $this->hasMany(BookingRequest::class, 'tenant_id');
+    }
+
     /**
      * Determine if the user can access a given Filament panel.
      */

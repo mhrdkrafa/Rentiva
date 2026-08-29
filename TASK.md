@@ -63,16 +63,16 @@
 - [x] N+1 review.
 
 ## Phase 5 — Availability & Booking
-- [ ] Availability blocks.
-- [ ] Booking request.
-- [ ] Owner review.
-- [ ] Accept/reject.
-- [ ] Cancellation.
-- [ ] Expiration.
-- [ ] Rental creation.
-- [ ] Double-booking protection.
-- [ ] Notifications.
-- [ ] Concurrency tests.
+- [x] Availability blocks.
+- [x] Booking request.
+- [x] Owner review.
+- [x] Accept/reject.
+- [x] Cancellation.
+- [x] Expiration.
+- [x] Rental creation.
+- [x] Double-booking protection.
+- [x] Notifications.
+- [x] Concurrency tests.
 
 ## Phase 6 — Tenant
 - [ ] Dashboard.

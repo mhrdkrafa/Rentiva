@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 class Property extends Model
 {
     use HasFactory, SoftDeletes;
@@ -110,6 +112,11 @@ class Property extends Model
     public function additionalFees(): HasMany
     {
         return $this->hasMany(AdditionalFee::class);
+    }
+
+    public function bookingRequests(): HasManyThrough
+    {
+        return $this->hasManyThrough(BookingRequest::class, Unit::class);
     }
 
     public function scopePublished(Builder $query): Builder

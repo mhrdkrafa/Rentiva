@@ -1,7 +1,28 @@
 @extends('layouts.app', ['title' => $property->name . ' — Rentiva', 'seo' => $seo ?? null])
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8" x-data="{ 
+    bookingModalOpen: false, 
+    selectedUnitId: null, 
+    selectedUnitName: '', 
+    selectedPricePlanId: null, 
+    selectedPriceAmount: 0,
+    durationMonths: 1,
+    checkInDate: '{{ now()->addDay()->toDateString() }}',
+    notes: '',
+
+    openBooking(unitId, unitName, pricePlanId, priceAmount) {
+        @auth
+            this.selectedUnitId = unitId;
+            this.selectedUnitName = unitName;
+            this.selectedPricePlanId = pricePlanId;
+            this.selectedPriceAmount = priceAmount;
+            this.bookingModalOpen = true;
+        @else
+            window.location.href = '{{ url('/admin/login') }}';
+        @endauth
+    }
+}">
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-xs text-slate-500">
         <a href="{{ route('home') }}" class="hover:text-slate-800">Beranda</a>
@@ -147,13 +168,27 @@
                                     </div>
                                 </div>
 
-                                @if($unit->status === \App\Enums\UnitStatus::AVAILABLE)
-                                    <x-button variant="primary" size="md" href="{{ route('tenant.dashboard') }}">
+                                @if($unit->status === \App\Enums\UnitStatus::AVAILABLE && $unit->activeMonthlyPricePlan)
+                                    <x-button
+                                        type="button"
+                                        variant="primary"
+                                        size="md"
+                                        @click="openBooking({{ $unit->id }}, '{{ addslashes($unit->name) }}', {{ $unit->activeMonthlyPricePlan->id }}, {{ $unit->activeMonthlyPricePlan->amount }})"
+                                    >
+                                        Ajukan Sewa Kamar Ini
+                                    </x-button>
+                                @elseif($unit->status === \App\Enums\UnitStatus::AVAILABLE && $unit->pricePlans->first())
+                                    <x-button
+                                        type="button"
+                                        variant="primary"
+                                        size="md"
+                                        @click="openBooking({{ $unit->id }}, '{{ addslashes($unit->name) }}', {{ $unit->pricePlans->first()->id }}, {{ $unit->pricePlans->first()->amount }})"
+                                    >
                                         Ajukan Sewa Kamar Ini
                                     </x-button>
                                 @else
                                     <span class="text-xs font-semibold text-slate-400 bg-slate-100 px-3 py-2 rounded-xl">
-                                        Unit Tidak Tersedia
+                                        Unit Sedang Terisi
                                     </span>
                                 @endif
                             </div>
@@ -223,6 +258,78 @@
                     </p>
                 </x-card>
             </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal (Alpine.js) -->
+    <div
+        x-show="bookingModalOpen"
+        class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4"
+        style="display: none;"
+    >
+        <div @click.away="bookingModalOpen = false" class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Ajukan Sewa Kamar</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">{{ $property->name }} &bull; <span x-text="selectedUnitName" class="font-semibold text-emerald-700"></span></p>
+                </div>
+                <button @click="bookingModalOpen = false" class="text-slate-400 hover:text-slate-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form action="{{ route('tenant.bookings.store') }}" method="POST" class="space-y-4">
+                @csrf
+                <input type="hidden" name="unit_id" :value="selectedUnitId" />
+                <input type="hidden" name="price_plan_id" :value="selectedPricePlanId" />
+
+                <div>
+                    <x-input
+                        type="date"
+                        name="check_in_date"
+                        label="Tanggal Mulai Sewa (Check-in) *"
+                        x-model="checkInDate"
+                        min="{{ now()->toDateString() }}"
+                        required
+                    />
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase">Durasi Sewa *</label>
+                    <select name="duration_months" x-model="durationMonths" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2.5" required>
+                        <option value="1">1 Bulan</option>
+                        <option value="3">3 Bulan</option>
+                        <option value="6">6 Bulan</option>
+                        <option value="12">12 Bulan (1 Tahun)</option>
+                    </select>
+                </div>
+
+                <x-textarea
+                    name="tenant_notes"
+                    label="Catatan untuk Pemilik (Opsional)"
+                    placeholder="Contoh: Rencana masuk tgl 1, bawa motor 1..."
+                    rows="2"
+                />
+
+                <div class="p-4 bg-emerald-50/70 border border-emerald-100 rounded-2xl space-y-2 text-xs">
+                    <div class="flex justify-between font-semibold text-slate-700">
+                        <span>Perkiraan Total Biaya Sewa:</span>
+                        <span class="text-sm font-black text-emerald-800" x-text="'Rp ' + (selectedPriceAmount * durationMonths).toLocaleString('id-ID')"></span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Nominal pasti termasuk deposit & biaya layanan akan diverifikasi sistem saat pengajuan.</p>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <x-button type="button" variant="ghost" @click="bookingModalOpen = false">
+                        Batal
+                    </x-button>
+                    <x-button type="submit" variant="primary" class="shadow-md shadow-emerald-600/20">
+                        Kirim Pengajuan Sewa
+                    </x-button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
