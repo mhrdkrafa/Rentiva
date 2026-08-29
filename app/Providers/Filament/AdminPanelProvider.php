@@ -28,9 +28,20 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Rentiva')
+            ->brandName('Rentiva Admin')
             ->colors([
                 'primary' => Color::Emerald,
+                'gray' => Color::Slate,
+            ])
+            ->favicon(asset('favicon.ico'))
+            ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                'Katalog Properti',
+                'Penyewaan & Booking',
+                'Keuangan & Transaksi',
+                'Pengguna & Akses',
+                'Konten CMS',
+                'Pengaturan Sistem',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

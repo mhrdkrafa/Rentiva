@@ -14,15 +14,15 @@
 
 
 ## Phase 1 — Foundation
-- [ ] Public layout.
-- [ ] Admin panel.
-- [ ] Tenant dashboard shell.
-- [ ] Owner dashboard shell.
-- [ ] Design tokens.
-- [ ] Base Blade components.
-- [ ] Error pages.
-- [ ] SEO foundation.
-- [ ] Filesystem.
+- [x] Public layout.
+- [x] Admin panel.
+- [x] Tenant dashboard shell.
+- [x] Owner dashboard shell.
+- [x] Design tokens.
+- [x] Base Blade components.
+- [x] Error pages.
+- [x] SEO foundation.
+- [x] Filesystem.
 
 ## Phase 2 — Identity
 - [ ] Roles.
