@@ -49,18 +49,18 @@
 - [x] Public listing/detail.
 
 ## Phase 4 — Search
-- [ ] Keyword search.
-- [ ] Location filter.
-- [ ] Price filter.
-- [ ] Type filter.
-- [ ] Facility filter.
-- [ ] Room filter.
-- [ ] Availability filter.
-- [ ] Sorting.
-- [ ] Pagination.
-- [ ] List/map abstraction.
-- [ ] Search tests.
-- [ ] N+1 review.
+- [x] Keyword search.
+- [x] Location filter.
+- [x] Price filter.
+- [x] Type filter.
+- [x] Facility filter.
+- [x] Room filter.
+- [x] Availability filter.
+- [x] Sorting.
+- [x] Pagination.
+- [x] List/map abstraction.
+- [x] Search tests.
+- [x] N+1 review.
 
 ## Phase 5 — Availability & Booking
 - [ ] Availability blocks.

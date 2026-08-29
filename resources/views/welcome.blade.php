@@ -26,26 +26,25 @@
 
                 <!-- Search Box Bar -->
                 <div class="pt-4">
-                    <form action="{{ url('/search') }}" method="GET" class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-3 text-slate-800">
+                    <form action="{{ route('properties.index') }}" method="GET" class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-3 text-slate-800">
                         <div class="flex-1 w-full flex items-center gap-3 px-3 py-2 border-b md:border-b-0 md:border-r border-slate-200">
                             <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                             <input
                                 type="text"
-                                name="location"
-                                placeholder="Mau cari di kota, area, atau kampus mana?"
+                                name="q"
+                                placeholder="Mau cari di kota, area, atau kampus mana? (contoh: Pogung, Dago, UI)"
                                 class="w-full bg-transparent text-sm focus:outline-none placeholder-slate-400 font-medium"
                             />
                         </div>
 
                         <div class="w-full md:w-48 px-3 py-2 border-b md:border-b-0 md:border-r border-slate-200">
-                            <select name="type" class="w-full bg-transparent text-sm focus:outline-none text-slate-700 font-medium cursor-pointer">
-                                <option value="">Semua Tipe</option>
-                                <option value="kost">Kost Harian / Bulanan</option>
-                                <option value="apartment">Apartemen</option>
-                                <option value="house">Rumah Sewa</option>
+                            <select name="gender" class="w-full bg-transparent text-sm focus:outline-none text-slate-700 font-medium cursor-pointer">
+                                <option value="all">Semua Tipe Kost</option>
+                                <option value="female_only">Kost Putri</option>
+                                <option value="male_only">Kost Putra</option>
+                                <option value="married_couples">Pasutri / Keluarga</option>
                             </select>
                         </div>
 
@@ -58,13 +57,14 @@
                     </form>
                 </div>
 
-                <!-- Quick Filters -->
+                <!-- Quick Search Chips -->
                 <div class="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-300">
-                    <span class="text-slate-400 font-medium">Pencarian Populer:</span>
-                    <a href="{{ url('/search?location=Jakarta+Selatan') }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Jakarta Selatan</a>
-                    <a href="{{ url('/search?location=Bandung') }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Bandung (Dekat ITB/Unpad)</a>
-                    <a href="{{ url('/search?location=Yogyakarta') }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Yogyakarta (Dekat UGM)</a>
-                    <a href="{{ url('/search?gender=putri') }}" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Kost Putri</a>
+                    <span class="text-slate-400 font-medium">Pencarian Cepat:</span>
+                    <a href="{{ route('properties.index', ['q' => 'UGM']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat UGM Jogja</a>
+                    <a href="{{ route('properties.index', ['q' => 'ITB']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat ITB Bandung</a>
+                    <a href="{{ route('properties.index', ['q' => 'UI']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat UI Depok</a>
+                    <a href="{{ route('properties.index', ['gender' => 'female_only']) }}" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Kost Putri</a>
+                    <a href="{{ route('properties.index', ['available_only' => '1']) }}" class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30">Kamar Siap Huni</a>
                 </div>
             </div>
         </div>

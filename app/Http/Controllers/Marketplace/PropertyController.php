@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Marketplace;
 
-use App\Enums\GenderPolicy;
 use App\Enums\PropertyStatus;
 use App\Enums\VerificationStatus;
 use App\Http\Controllers\Controller;
@@ -10,59 +9,25 @@ use App\Models\Facility;
 use App\Models\Location;
 use App\Models\Property;
 use App\Models\PropertyType;
+use App\Services\PropertySearchService;
 use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PropertyController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, PropertySearchService $searchService): View
     {
-        $query = Property::query()
-            ->where('status', PropertyStatus::PUBLISHED)
-            ->where('verification_status', VerificationStatus::VERIFIED)
-            ->with(['propertyType', 'location', 'coverImage', 'facilities', 'units.pricePlans']);
+        $filters = $request->all();
+        $properties = $searchService->search($filters, 12);
 
-        // Filter by location / search query
-        if ($request->filled('location_id')) {
-            $query->where('location_id', $request->location_id);
-        } elseif ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function ($sub) use ($q) {
-                $sub->where('name', 'like', "%{$q}%")
-                    ->orWhere('address', 'like', "%{$q}%")
-                    ->orWhereHas('location', fn ($l) => $l->where('name', 'like', "%{$q}%"));
-            });
-        }
-
-        // Filter by property type
-        if ($request->filled('type_id')) {
-            $query->where('property_type_id', $request->type_id);
-        }
-
-        // Filter by gender policy
-        if ($request->filled('gender') && $request->gender !== 'all') {
-            $query->where(function ($g) use ($request) {
-                $g->where('gender_policy', $request->gender)
-                  ->orWhere('gender_policy', GenderPolicy::ALL);
-            });
-        }
-
-        // Sort order
-        match ($request->get('sort', 'latest')) {
-            'price_low' => $query->orderBy('id', 'asc'), // will be enhanced with raw min price query
-            'featured' => $query->orderByDesc('featured')->latest(),
-            default => $query->latest(),
-        };
-
-        $properties = $query->paginate(12)->withQueryString();
         $locations = Location::where('is_active', true)->orderBy('name')->get();
         $propertyTypes = PropertyType::where('is_active', true)->get();
         $facilities = Facility::where('is_active', true)->get();
 
         $seo = SeoService::propertyList($properties->total());
 
-        return view('marketplace.index', compact('properties', 'locations', 'propertyTypes', 'facilities', 'seo'));
+        return view('marketplace.index', compact('properties', 'locations', 'propertyTypes', 'facilities', 'seo', 'filters'));
     }
 
     public function show(string $slug): View
@@ -83,7 +48,7 @@ class PropertyController extends Controller
             ])
             ->firstOrFail();
 
-        // Check visibility authorization if not published and verified
+        // Visibility authorization
         if (! $property->isPublished() || ! $property->isVerified()) {
             $user = auth()->user();
             if (! $user || (! $user->isAdmin() && $user->id !== $property->owner_id && ! $user->canManageOwnerProperty($property->owner_id))) {
