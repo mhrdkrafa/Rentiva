@@ -17,7 +17,7 @@ class HomeController extends Controller
         $faqs = $cmsService->faqs();
         $latestArticles = $cmsService->latestArticles(3);
 
-        $popularLocations = Location::where('is_popular', true)->limit(6)->get();
+        $popularLocations = Location::where('is_active', true)->withCount('properties')->orderByDesc('properties_count')->limit(6)->get();
         $propertyTypes = PropertyType::where('is_active', true)->limit(6)->get();
 
         return view('welcome', compact(
