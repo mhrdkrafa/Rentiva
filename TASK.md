@@ -75,13 +75,13 @@
 - [x] Concurrency tests.
 
 ## Phase 6 — Tenant
-- [ ] Dashboard.
-- [ ] Favorites.
-- [ ] Booking history.
-- [ ] Current rental.
-- [ ] Owner contact.
-- [ ] Support.
-- [ ] Mobile UI.
+- [x] Dashboard.
+- [x] Favorites.
+- [x] Booking history.
+- [x] Current rental.
+- [x] Owner contact.
+- [x] Support.
+- [x] Mobile UI.
 
 ## Phase 7 — Owner
 - [ ] Dashboard.

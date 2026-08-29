@@ -99,6 +99,11 @@ class Property extends Model
         return $this->belongsToMany(Facility::class, 'facility_property');
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
     public function units(): HasMany
     {
         return $this->hasMany(Unit::class);

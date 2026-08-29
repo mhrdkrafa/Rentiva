@@ -8,7 +8,11 @@ use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
 use App\Http\Controllers\Owner\PropertyManagerController;
 use App\Http\Controllers\Owner\UnitController as OwnerUnitController;
 use App\Http\Controllers\Tenant\BookingController as TenantBookingController;
+use App\Http\Controllers\Tenant\DashboardController as TenantDashboardController;
+use App\Http\Controllers\Tenant\FavoriteController as TenantFavoriteController;
+use App\Http\Controllers\Tenant\IssueController as TenantIssueController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
+use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,18 +26,31 @@ Route::get('/search', [PublicPropertyController::class, 'index'])->name('search'
 
 // Tenant Routes
 Route::prefix('tenant')->name('tenant.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('tenant.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [TenantDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [TenantProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [TenantProfileController::class, 'update'])->name('profile.update');
+
+    // Favorites Wishlist
+    Route::get('/favorites', [TenantFavoriteController::class, 'index'])->name('favorites');
+    Route::post('/favorites/{property}/toggle', [TenantFavoriteController::class, 'toggle'])->name('favorites.toggle');
 
     // Booking requests
     Route::get('/bookings', [TenantBookingController::class, 'index'])->name('bookings.index');
     Route::post('/bookings', [TenantBookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{booking}', [TenantBookingController::class, 'show'])->name('bookings.show');
     Route::post('/bookings/{booking}/cancel', [TenantBookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // Rental Tenancies & Digital Receipts
+    Route::get('/rentals', [TenantRentalController::class, 'index'])->name('rentals.index');
+    Route::get('/rentals/{rental}', [TenantRentalController::class, 'show'])->name('rentals.show');
+    Route::get('/rentals/{rental}/receipt', [TenantRentalController::class, 'receipt'])->name('rentals.receipt');
+
+    // Maintenance / Issue Reporting
+    Route::get('/issues', [TenantIssueController::class, 'index'])->name('issues.index');
+    Route::get('/issues/create', [TenantIssueController::class, 'create'])->name('issues.create');
+    Route::post('/issues', [TenantIssueController::class, 'store'])->name('issues.store');
+    Route::get('/issues/{issue}', [TenantIssueController::class, 'show'])->name('issues.show');
 });
 
 // Owner Routes

@@ -92,6 +92,11 @@ class Unit extends Model
         return $this->hasMany(BookingRequest::class);
     }
 
+    public function rentals(): HasMany
+    {
+        return $this->hasMany(Rental::class);
+    }
+
     public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('status', UnitStatus::AVAILABLE);
