@@ -61,12 +61,14 @@
 
                 <!-- Right Actions -->
                 <div class="flex items-center gap-3">
-                    <x-button variant="outline" size="sm" href="{{ url('/owner/dashboard') }}" class="hidden sm:inline-flex text-emerald-700 border-emerald-200 hover:bg-emerald-50">
-                        <svg class="w-4 h-4 mr-1 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        Pasang Iklan Properti
-                    </x-button>
+                    @if(!auth()->check() || auth()->user()->isOwner() || auth()->user()->isAdmin())
+                        <x-button variant="outline" size="sm" href="{{ url('/owner/dashboard') }}" class="hidden sm:inline-flex text-emerald-700 border-emerald-200 hover:bg-emerald-50">
+                            <svg class="w-4 h-4 mr-1 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Pasang Iklan Properti
+                        </x-button>
+                    @endif
 
                     @auth
                         <!-- User Dropdown -->
@@ -96,19 +98,35 @@
                                     </a>
                                 @endif
 
-                                <a href="{{ url('/tenant/dashboard') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
-                                    Dashboard Penyewa
-                                </a>
+                                @if(auth()->user()->isTenant() || auth()->user()->isAdmin())
+                                    <a href="{{ route('tenant.dashboard') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Dashboard Penyewa
+                                    </a>
+                                    <a href="{{ route('tenant.favorites') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Kost Favorit Saya
+                                    </a>
+                                    <a href="{{ route('tenant.invoices.index') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Tagihan & Sewa Saya
+                                    </a>
+                                @endif
 
-                                <a href="{{ url('/owner/dashboard') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
-                                    Dashboard Pemilik (Owner)
-                                </a>
+                                @if(auth()->user()->isOwner() || auth()->user()->isAdmin() || auth()->user()->managerAssignmentsAsManager()->exists())
+                                    <a href="{{ route('owner.dashboard') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Dashboard Pemilik (Owner)
+                                    </a>
+                                    <a href="{{ route('owner.properties.index') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Kelola Properti Kost
+                                    </a>
+                                    <a href="{{ route('owner.bookings.index') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50">
+                                        Pengajuan Sewa Masuk
+                                    </a>
+                                @endif
 
                                 <div class="border-t border-slate-100 my-1"></div>
 
                                 <form method="POST" action="{{ route('logout') ?? url('/logout') }}">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50">
+                                    <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50 font-medium">
                                         Keluar (Log out)
                                     </button>
                                 </form>
