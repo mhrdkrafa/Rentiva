@@ -25,6 +25,10 @@ use App\Http\Controllers\Tenant\IssueController as TenantIssueController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
 use App\Http\Controllers\Tenant\ReviewController as TenantReviewController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -40,9 +44,30 @@ Route::get('/properties', [PublicPropertyController::class, 'index'])->name('pro
 Route::get('/properties/{slug}', [PublicPropertyController::class, 'show'])->name('properties.show');
 Route::get('/search', [PublicPropertyController::class, 'index'])->name('search');
 
+// Public Promotions & Deals
+Route::get('/promotions', [PromotionController::class, 'index'])->name('promotions.index');
+
+// Informational & Policy Pages
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+
 // Educational Articles & Guides
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+});
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 
 // In-Platform Messaging Routes
 Route::prefix('messages')->name('messages.')->group(function () {

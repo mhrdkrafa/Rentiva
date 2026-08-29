@@ -133,6 +133,13 @@ test('public routes render successfully without 500 errors', function () {
         '/search?city=yogyakarta-crawler',
         '/articles',
         '/articles/' . $this->article->slug,
+        '/promotions',
+        '/faq',
+        '/terms',
+        '/privacy',
+        '/contact',
+        '/login',
+        '/register',
         '/sitemap.xml',
         '/robots.txt',
     ];
@@ -141,6 +148,34 @@ test('public routes render successfully without 500 errors', function () {
         $response = $this->get($url);
         $response->assertOk();
     }
+});
+
+test('guest can register as tenant and login successfully', function () {
+    // 1. Register as tenant
+    $registerResponse = $this->post('/register', [
+        'name' => 'Budi Santoso',
+        'email' => 'budi.santoso@example.com',
+        'phone' => '081298765432',
+        'role' => 'tenant',
+        'password' => 'Password123!',
+        'password_confirmation' => 'Password123!',
+    ]);
+
+    $registerResponse->assertRedirect(route('tenant.dashboard'));
+    $this->assertAuthenticated();
+
+    // 2. Logout
+    $logoutResponse = $this->post('/logout');
+    $logoutResponse->assertRedirect('/');
+    $this->assertGuest();
+
+    // 3. Login
+    $loginResponse = $this->post('/login', [
+        'email' => 'budi.santoso@example.com',
+        'password' => 'Password123!',
+    ]);
+    $loginResponse->assertRedirect(route('tenant.dashboard'));
+    $this->assertAuthenticated();
 });
 
 test('tenant routes render successfully for authenticated tenant', function () {
