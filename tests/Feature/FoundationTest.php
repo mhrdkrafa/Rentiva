@@ -11,7 +11,12 @@ test('homepage renders public marketplace layout successfully', function () {
 });
 
 test('tenant dashboard shell renders successfully', function () {
-    $response = $this->get('/tenant/dashboard');
+    $tenant = User::factory()->create([
+        'role' => \App\Enums\UserRole::TENANT,
+        'status' => \App\Enums\UserStatus::ACTIVE,
+    ]);
+
+    $response = $this->actingAs($tenant)->get('/tenant/dashboard');
 
     $response->assertStatus(200);
     $response->assertSee('Portal Hunian Terpadu');
@@ -19,7 +24,12 @@ test('tenant dashboard shell renders successfully', function () {
 });
 
 test('owner dashboard shell renders successfully', function () {
-    $response = $this->get('/owner/dashboard');
+    $owner = User::factory()->create([
+        'role' => \App\Enums\UserRole::OWNER,
+        'status' => \App\Enums\UserStatus::ACTIVE,
+    ]);
+
+    $response = $this->actingAs($owner)->get('/owner/dashboard');
 
     $response->assertStatus(200);
     $response->assertSee('Dashboard Manajemen Properti');

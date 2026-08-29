@@ -239,3 +239,19 @@ test('messaging routes render stream for participant', function () {
     $streamResponse = $this->actingAs($this->tenant)->get('/messages?conversation=' . $this->conversation->id);
     $streamResponse->assertOk();
 });
+
+test('role based middleware enforces strict access isolation', function () {
+    // 1. Guest blocked from tenant & owner dashboards
+    $this->get('/tenant/dashboard')->assertRedirect(route('login'));
+    $this->get('/owner/dashboard')->assertRedirect(route('login'));
+
+    // 2. Tenant blocked from owner portal and redirected to tenant dashboard
+    $this->actingAs($this->tenant)
+        ->get('/owner/dashboard')
+        ->assertRedirect(route('tenant.dashboard'));
+
+    // 3. Owner redirected when accessing tenant dashboard
+    $this->actingAs($this->owner)
+        ->get('/tenant/dashboard')
+        ->assertRedirect(route('owner.dashboard'));
+});

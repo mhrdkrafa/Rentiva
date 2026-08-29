@@ -70,15 +70,15 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
 // In-Platform Messaging Routes
-Route::prefix('messages')->name('messages.')->group(function () {
+Route::prefix('messages')->name('messages.')->middleware('auth')->group(function () {
     Route::get('/', [MessagingController::class, 'index'])->name('index');
     Route::post('/start', [MessagingController::class, 'start'])->name('start');
     Route::get('/{conversation}', [MessagingController::class, 'show'])->name('show');
     Route::post('/{conversation}/send', [MessagingController::class, 'send'])->name('send');
 });
 
-// Tenant Routes
-Route::prefix('tenant')->name('tenant.')->group(function () {
+// Tenant Routes (Protected for Tenant Role)
+Route::prefix('tenant')->name('tenant.')->middleware(['auth', 'role.tenant'])->group(function () {
     Route::get('/dashboard', [TenantDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [TenantProfileController::class, 'show'])->name('profile');
@@ -117,8 +117,8 @@ Route::prefix('tenant')->name('tenant.')->group(function () {
     Route::get('/messages', [MessagingController::class, 'index'])->name('messages');
 });
 
-// Owner Routes
-Route::prefix('owner')->name('owner.')->group(function () {
+// Owner Routes (Protected for Owner & Property Manager Roles)
+Route::prefix('owner')->name('owner.')->middleware(['auth', 'role.owner'])->group(function () {
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [OwnerProfileController::class, 'show'])->name('profile');

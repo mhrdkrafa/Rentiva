@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/*',
             'webhooks/*',
         ]);
+
+        $middleware->alias([
+            'role.tenant' => \App\Http\Middleware\EnsureTenant::class,
+            'role.owner' => \App\Http\Middleware\EnsureOwnerOrManager::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
