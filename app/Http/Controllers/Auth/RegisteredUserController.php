@@ -55,13 +55,12 @@ class RegisteredUserController extends Controller
             // Create default profile
             UserProfile::create([
                 'user_id' => $newUser->id,
-                'phone' => $request->phone,
             ]);
 
             if ($role === UserRole::OWNER) {
                 OwnerProfile::create([
                     'user_id' => $newUser->id,
-                    'business_name' => $request->name . ' Properties',
+                    'company_name' => $request->name . ' Properties',
                 ]);
             }
 
