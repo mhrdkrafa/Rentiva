@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Marketplace\PropertyController as PublicPropertyController;
 use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\Owner\AvailabilityController as OwnerAvailabilityController;
@@ -21,14 +23,16 @@ use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', HomeController::class)->name('home');
 
 // Public Marketplace Catalog Routes
 Route::get('/properties', [PublicPropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/{slug}', [PublicPropertyController::class, 'show'])->name('properties.show');
 Route::get('/search', [PublicPropertyController::class, 'index'])->name('search');
+
+// Educational Articles & Guides
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 // In-Platform Messaging Routes
 Route::prefix('messages')->name('messages.')->group(function () {

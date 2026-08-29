@@ -103,16 +103,16 @@
 - [x] Notifications.
 
 ## Phase 9 — CMS
-- [ ] Website settings.
-- [ ] Menus.
-- [ ] Homepage sections.
-- [ ] Hero.
-- [ ] Featured properties.
-- [ ] Promotions.
-- [ ] Articles.
-- [ ] FAQ.
-- [ ] SEO.
-- [ ] Section ordering.
+- [x] Website settings.
+- [x] Menus.
+- [x] Homepage sections.
+- [x] Hero.
+- [x] Featured properties.
+- [x] Promotions.
+- [x] Articles.
+- [x] FAQ.
+- [x] SEO.
+- [x] Section ordering.
 
 ## Phase 10 — Finance
 - [ ] Invoices.

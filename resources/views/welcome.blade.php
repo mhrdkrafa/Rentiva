@@ -1,18 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-16 py-8 md:py-12">
-    <!-- Hero & Search Section -->
+<div class="space-y-20 py-8 md:py-12">
+    <!-- 1. Hero & Search Section -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="relative rounded-3xl bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 p-8 sm:p-12 lg:p-16 text-white overflow-hidden shadow-2xl">
-            <!-- Decorative Glow -->
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 max-w-3xl space-y-6">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-emerald-300 text-xs font-semibold tracking-wide">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Solusi Sewa Kost & Properti Modern di Indonesia
+                    {{ \App\Models\WebsiteSetting::get('site_tagline', 'Sewa Kost & Kamar Praktis, Aman & Terpercaya') }}
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15]">
@@ -34,7 +33,7 @@
                             <input
                                 type="text"
                                 name="q"
-                                placeholder="Mau cari di kota, area, atau kampus mana? (contoh: Pogung, Dago, UI)"
+                                placeholder="Cari di kota, area, atau dekat kampus mana? (contoh: Pogung, UGM, Sleman)"
                                 class="w-full bg-transparent text-sm focus:outline-none placeholder-slate-400 font-medium"
                             />
                         </div>
@@ -44,7 +43,7 @@
                                 <option value="all">Semua Tipe Kost</option>
                                 <option value="female_only">Kost Putri</option>
                                 <option value="male_only">Kost Putra</option>
-                                <option value="married_couples">Pasutri / Keluarga</option>
+                                <option value="married_couples">Pasutri / Campur</option>
                             </select>
                         </div>
 
@@ -61,8 +60,7 @@
                 <div class="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-300">
                     <span class="text-slate-400 font-medium">Pencarian Cepat:</span>
                     <a href="{{ route('properties.index', ['q' => 'UGM']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat UGM Jogja</a>
-                    <a href="{{ route('properties.index', ['q' => 'ITB']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat ITB Bandung</a>
-                    <a href="{{ route('properties.index', ['q' => 'UI']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat UI Depok</a>
+                    <a href="{{ route('properties.index', ['q' => 'UNY']) }}" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Dekat UNY</a>
                     <a href="{{ route('properties.index', ['gender' => 'female_only']) }}" class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Kost Putri</a>
                     <a href="{{ route('properties.index', ['available_only' => '1']) }}" class="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-400/30">Kamar Siap Huni</a>
                 </div>
@@ -70,7 +68,7 @@
         </div>
     </section>
 
-    <!-- Key Benefits & Trust Signals -->
+    <!-- 2. Value Proposition Stats & Trust Signals -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <x-card class="bg-white p-6" hover>
@@ -80,7 +78,7 @@
                     </svg>
                 </div>
                 <h3 class="text-base font-bold text-slate-900 mb-1">Foto & Data Terverifikasi</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
                     Setiap kamar dan fasilitas diinspeksi untuk memastikan kesesuaian antara foto listing dengan kondisi nyata.
                 </p>
             </x-card>
@@ -92,7 +90,7 @@
                     </svg>
                 </div>
                 <h3 class="text-base font-bold text-slate-900 mb-1">Ketersediaan Real-Time</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
                     Sistem pemesanan otomatis mencegah double booking dengan kalender ketersediaan kamar yang selalu terbarui.
                 </p>
             </x-card>
@@ -103,32 +101,149 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <h3 class="text-base font-bold text-slate-900 mb-1">Harga Transparan & Jelas</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">
-                    Tanpa biaya tersembunyi. Rincian sewa, deposit, dan tagihan listrik/air terpampang transparan sebelum sewa.
+                <h3 class="text-base font-bold text-slate-900 mb-1">Kuitansi Digital & Bantuan Cepat</h3>
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                    Bukti sewa resmi tersimpan rapi, dan fitur keluhan fasilitas memastikan kamar Anda selalu dalam kondisi terbaik.
                 </p>
             </x-card>
         </div>
     </section>
 
-    <!-- Call To Action for Owners -->
+    <!-- 3. Featured Properties -->
+    @if($featuredProperties->isNotEmpty())
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Kost Pilihan Rekomendasi</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Paling diminati dengan fasilitas lengkap dan lokasi terbaik.</p>
+                </div>
+                <a href="{{ route('properties.index') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Lihat Semua Kost &rarr;</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($featuredProperties as $prop)
+                    <x-property-card :property="$prop" />
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    <!-- 4. Testimonials Section -->
+    @if($testimonials->isNotEmpty())
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12 space-y-2">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Cerita Bahagia Pengguna Rentiva</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Pengalaman nyata dari penyewa dan pemilik kost yang menggunakan platform kami.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($testimonials as $t)
+                    <x-card class="p-6 space-y-4 bg-white" hover>
+                        <div class="flex items-center gap-1 text-amber-400 text-sm">
+                            {{ str_repeat('⭐', $t->rating) }}
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                            "{{ $t->content }}"
+                        </p>
+                        <div class="pt-3 border-t border-slate-100 flex items-center gap-3">
+                            <x-avatar :name="$t->name" size="md" />
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900">{{ $t->name }}</h4>
+                                <p class="text-[11px] text-slate-400">{{ $t->role }}</p>
+                            </div>
+                        </div>
+                    </x-card>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    <!-- 5. FAQ Accordion Section -->
+    @if($faqs->isNotEmpty())
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" id="faq">
+            <div class="text-center space-y-2 mb-10">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Pertanyaan yang Sering Diajukan (FAQ)</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Jawaban lengkap seputar cara sewa, pembayaran aman, dan tata tertib hunian.</p>
+            </div>
+
+            <div class="space-y-4" x-data="{ openFaq: null }">
+                @foreach($faqs as $index => $faq)
+                    <x-card class="overflow-hidden border border-slate-200/80">
+                        <button
+                            type="button"
+                            @click="openFaq = (openFaq === {{ $index }} ? null : {{ $index }})"
+                            class="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base hover:text-emerald-600 transition-colors"
+                        >
+                            <span>{{ $faq->question }}</span>
+                            <svg class="w-5 h-5 shrink-0 transition-transform duration-200" :class="openFaq === {{ $index }} ? 'rotate-180 text-emerald-600' : 'text-slate-400'" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="openFaq === {{ $index }}" x-collapse class="px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                            {{ $faq->answer }}
+                        </div>
+                    </x-card>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    <!-- 6. Educational Articles Section -->
+    @if($latestArticles->isNotEmpty())
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-end justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Artikel & Panduan Edukasi</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Tips memilih kost, gaya hidup, dan strategi mengelola properti.</p>
+                </div>
+                <a href="{{ route('articles.index') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700">Semua Artikel &rarr;</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($latestArticles as $article)
+                    <x-card class="overflow-hidden flex flex-col group hover:shadow-lg transition-all" hover>
+                        <div class="relative h-48 bg-slate-100 overflow-hidden">
+                            <img src="{{ $article->cover_image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 backdrop-blur-xs text-[10px] font-bold text-white uppercase">
+                                {{ $article->category }}
+                            </span>
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <span class="text-[10px] text-slate-400 font-semibold">{{ $article->published_at?->format('d M Y') ?? $article->created_at->format('d M Y') }} &bull; {{ $article->estimated_reading_time }} min baca</span>
+                                <h3 class="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mt-1 line-clamp-2">
+                                    <a href="{{ route('articles.show', $article->slug) }}">
+                                        {{ $article->title }}
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-500 line-clamp-2 mt-1">
+                                    {{ $article->excerpt }}
+                                </p>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <a href="{{ route('articles.show', $article->slug) }}" class="text-xs font-bold text-emerald-600 group-hover:text-emerald-700 flex items-center gap-1">
+                                    Baca Selengkapnya &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </x-card>
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    <!-- 7. Owner CTA Banner -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-3xl bg-emerald-50 border border-emerald-100 p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="space-y-3 max-w-xl">
-                <x-badge variant="primary">Untuk Pemilik Kost & Properti</x-badge>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">
-                    Maksimalkan Okupansi Properti Anda Bersama Rentiva
-                </h2>
-                <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-                    Kelola ketersediaan kamar, filter calon penyewa, dan terima pembayaran sewa secara teratur dengan sistem manajemen pemilik yang intuitif.
+        <div class="rounded-3xl bg-emerald-600 p-8 sm:p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-emerald-600/20">
+            <div class="space-y-2 max-w-xl text-center md:text-left">
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Punya Properti atau Kamar Kost Kosong?</h2>
+                <p class="text-emerald-100 text-xs sm:text-sm leading-relaxed">
+                    Daftarkan properti Anda sekarang, dapatkan verifikasi gratis, dan raih potensi okupansi maksimal dengan manajemen digital bebas repot.
                 </p>
             </div>
-            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0">
-                <x-button variant="secondary" size="lg" href="{{ url('/owner/dashboard') }}">
-                    Buka Dashboard Owner
-                </x-button>
-                <x-button variant="outline" size="lg" href="{{ url('/register') }}">
-                    Daftar Sebagai Mitra
+            <div class="flex items-center gap-3 shrink-0">
+                <x-button variant="white" size="lg" href="{{ route('owner.properties.create') }}" class="font-bold text-emerald-800 shadow-md">
+                    Daftarkan Properti Saya
                 </x-button>
             </div>
         </div>
