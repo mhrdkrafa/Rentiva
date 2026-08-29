@@ -25,13 +25,13 @@
 - [x] Filesystem.
 
 ## Phase 2 — Identity
-- [ ] Roles.
-- [ ] Permissions.
-- [ ] Policies.
-- [ ] Tenant profile.
-- [ ] Owner profile.
-- [ ] Property manager assignment.
-- [ ] Authorization tests.
+- [x] Roles.
+- [x] Permissions.
+- [x] Policies.
+- [x] Tenant profile.
+- [x] Owner profile.
+- [x] Property manager assignment.
+- [x] Authorization tests.
 
 ## Phase 3 — Property Catalog
 - [ ] Locations.
