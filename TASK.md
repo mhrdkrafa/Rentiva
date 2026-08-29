@@ -34,19 +34,19 @@
 - [x] Authorization tests.
 
 ## Phase 3 — Property Catalog
-- [ ] Locations.
-- [ ] Property types.
-- [ ] Facilities.
-- [ ] Properties.
-- [ ] Property images.
-- [ ] Units.
-- [ ] Unit images.
-- [ ] Room types.
-- [ ] Price plans.
-- [ ] Additional fees.
-- [ ] Verification.
-- [ ] Filament resources.
-- [ ] Public listing/detail.
+- [x] Locations.
+- [x] Property types.
+- [x] Facilities.
+- [x] Properties.
+- [x] Property images.
+- [x] Units.
+- [x] Unit images.
+- [x] Room types.
+- [x] Price plans.
+- [x] Additional fees.
+- [x] Verification.
+- [x] Filament resources.
+- [x] Public listing/detail.
 
 ## Phase 4 — Search
 - [ ] Keyword search.

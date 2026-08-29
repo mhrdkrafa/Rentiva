@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if(isset($seo))
-        {{ $seo }}
+    @if(isset($seo) && $seo instanceof \App\Support\SeoData)
+        <x-seo :data="$seo" />
+    @elseif(isset($seo))
+        {!! $seo !!}
     @else
         <x-seo />
     @endif

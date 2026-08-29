@@ -13,6 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SuperAdminSeeder::class,
+            LocationSeeder::class,
+            PropertyTypeSeeder::class,
+            FacilitySeeder::class,
+            RoomTypeSeeder::class,
+            PropertyCatalogSeeder::class,
         ]);
     }
 }
