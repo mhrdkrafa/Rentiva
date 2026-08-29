@@ -84,14 +84,14 @@
 - [x] Mobile UI.
 
 ## Phase 7 — Owner
-- [ ] Dashboard.
-- [ ] Property management.
-- [ ] Units.
-- [ ] Availability.
-- [ ] Pricing.
-- [ ] Booking management.
-- [ ] Tenants.
-- [ ] Statistics.
+- [x] Dashboard.
+- [x] Property management.
+- [x] Units.
+- [x] Availability.
+- [x] Pricing.
+- [x] Booking management.
+- [x] Tenants.
+- [x] Statistics.
 
 ## Phase 8 — Messaging
 - [ ] Conversations.

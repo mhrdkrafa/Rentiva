@@ -3,9 +3,14 @@
 use App\Http\Controllers\Marketplace\PropertyController as PublicPropertyController;
 use App\Http\Controllers\Owner\AvailabilityController as OwnerAvailabilityController;
 use App\Http\Controllers\Owner\BookingController as OwnerBookingController;
+use App\Http\Controllers\Owner\DashboardController as OwnerDashboardController;
+use App\Http\Controllers\Owner\IssueController as OwnerIssueController;
+use App\Http\Controllers\Owner\PricingController as OwnerPricingController;
 use App\Http\Controllers\Owner\ProfileController as OwnerProfileController;
 use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
 use App\Http\Controllers\Owner\PropertyManagerController;
+use App\Http\Controllers\Owner\StatisticsController as OwnerStatisticsController;
+use App\Http\Controllers\Owner\TenantDirectoryController as OwnerTenantDirectoryController;
 use App\Http\Controllers\Owner\UnitController as OwnerUnitController;
 use App\Http\Controllers\Tenant\BookingController as TenantBookingController;
 use App\Http\Controllers\Tenant\DashboardController as TenantDashboardController;
@@ -55,9 +60,7 @@ Route::prefix('tenant')->name('tenant.')->group(function () {
 
 // Owner Routes
 Route::prefix('owner')->name('owner.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('owner.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [OwnerProfileController::class, 'show'])->name('profile');
     Route::put('/profile', [OwnerProfileController::class, 'update'])->name('profile.update');
@@ -73,10 +76,12 @@ Route::prefix('owner')->name('owner.')->group(function () {
     Route::get('/properties/{property}', [OwnerPropertyController::class, 'show'])->name('properties.show');
     Route::post('/properties/{property}/submit-verification', [OwnerPropertyController::class, 'submitVerification'])->name('properties.submit-verification');
 
-    // Units Management
+    // Units & Pricing Management
     Route::get('/properties/{property}/units/create', [OwnerUnitController::class, 'create'])->name('units.create');
     Route::post('/properties/{property}/units', [OwnerUnitController::class, 'store'])->name('units.store');
     Route::delete('/units/{unit}', [OwnerUnitController::class, 'destroy'])->name('units.destroy');
+    Route::get('/units/{unit}/pricing', [OwnerPricingController::class, 'edit'])->name('units.pricing.edit');
+    Route::post('/units/{unit}/pricing', [OwnerPricingController::class, 'update'])->name('units.pricing.update');
 
     // Incoming Booking Requests & Approvals
     Route::get('/bookings', [OwnerBookingController::class, 'index'])->name('bookings');
@@ -88,4 +93,16 @@ Route::prefix('owner')->name('owner.')->group(function () {
     Route::get('/availability', [OwnerAvailabilityController::class, 'index'])->name('availability');
     Route::post('/availability', [OwnerAvailabilityController::class, 'store'])->name('availability.store');
     Route::delete('/availability/{block}', [OwnerAvailabilityController::class, 'destroy'])->name('availability.destroy');
+
+    // Tenant Directory
+    Route::get('/tenants', [OwnerTenantDirectoryController::class, 'index'])->name('tenants');
+    Route::post('/tenants/{rental}/complete', [OwnerTenantDirectoryController::class, 'complete'])->name('tenants.complete');
+
+    // Issues & Maintenance
+    Route::get('/issues', [OwnerIssueController::class, 'index'])->name('issues.index');
+    Route::get('/issues/{issue}', [OwnerIssueController::class, 'show'])->name('issues.show');
+    Route::put('/issues/{issue}', [OwnerIssueController::class, 'update'])->name('issues.update');
+
+    // Statistics & Performance
+    Route::get('/statistics', [OwnerStatisticsController::class, 'index'])->name('statistics');
 });
