@@ -65,6 +65,16 @@ class Rental extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function review(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    public function hasReviewed(): bool
+    {
+        return $this->review()->exists();
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereIn('status', [RentalStatus::PENDING_MOVE_IN, RentalStatus::ACTIVE]);

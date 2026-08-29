@@ -13,6 +13,7 @@ use App\Http\Controllers\Owner\PricingController as OwnerPricingController;
 use App\Http\Controllers\Owner\ProfileController as OwnerProfileController;
 use App\Http\Controllers\Owner\PropertyController as OwnerPropertyController;
 use App\Http\Controllers\Owner\PropertyManagerController;
+use App\Http\Controllers\Owner\ReviewController as OwnerReviewController;
 use App\Http\Controllers\Owner\StatisticsController as OwnerStatisticsController;
 use App\Http\Controllers\Owner\TenantDirectoryController as OwnerTenantDirectoryController;
 use App\Http\Controllers\Owner\UnitController as OwnerUnitController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Tenant\InvoiceController as TenantInvoiceController;
 use App\Http\Controllers\Tenant\IssueController as TenantIssueController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\RentalController as TenantRentalController;
+use App\Http\Controllers\Tenant\ReviewController as TenantReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -71,6 +73,8 @@ Route::prefix('tenant')->name('tenant.')->group(function () {
     Route::get('/rentals', [TenantRentalController::class, 'index'])->name('rentals.index');
     Route::get('/rentals/{rental}', [TenantRentalController::class, 'show'])->name('rentals.show');
     Route::get('/rentals/{rental}/receipt', [TenantRentalController::class, 'receipt'])->name('rentals.receipt');
+    Route::get('/rentals/{rental}/review', [TenantReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/rentals/{rental}/review', [TenantReviewController::class, 'store'])->name('reviews.store');
 
     // Maintenance / Issue Reporting
     Route::get('/issues', [TenantIssueController::class, 'index'])->name('issues.index');
@@ -129,6 +133,10 @@ Route::prefix('owner')->name('owner.')->group(function () {
 
     // Finance & Income Ledger
     Route::get('/finance', [OwnerFinanceController::class, 'index'])->name('finance');
+
+    // Reviews & Ratings
+    Route::get('/reviews', [OwnerReviewController::class, 'index'])->name('reviews.index');
+    Route::post('/reviews/{review}/reply', [OwnerReviewController::class, 'reply'])->name('reviews.reply');
 
     // Statistics & Performance
     Route::get('/statistics', [OwnerStatisticsController::class, 'index'])->name('statistics');

@@ -127,14 +127,14 @@
 - [x] Audit tests.
 
 ## Phase 11 — Promotions & Reviews
-- [ ] Promotions.
-- [ ] Featured listing.
-- [ ] Discounts.
-- [ ] Campaign dates.
-- [ ] Usage limits.
-- [ ] Reviews.
-- [ ] Moderation.
-- [ ] Owner responses.
+- [x] Promotions.
+- [x] Featured listing.
+- [x] Discounts.
+- [x] Campaign dates.
+- [x] Usage limits.
+- [x] Reviews.
+- [x] Moderation.
+- [x] Owner responses.
 
 ## Phase 12 — SEO & Performance
 - [ ] Sitemap.

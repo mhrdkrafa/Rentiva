@@ -192,6 +192,31 @@ class Property extends Model
         return $this->units->count();
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function approvedReviews(): HasMany
+    {
+        return $this->hasMany(Review::class)->approved()->latest();
+    }
+
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class);
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        return (float) ($this->approvedReviews()->avg('rating') ?? 5.0);
+    }
+
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->approvedReviews()->count();
+    }
+
     public function getAvailableUnitsCountAttribute(): int
     {
         return $this->units->where('status', UnitStatus::AVAILABLE)->count();

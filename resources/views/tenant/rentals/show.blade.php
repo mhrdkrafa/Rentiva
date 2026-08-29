@@ -24,6 +24,11 @@
                     </svg>
                     Lihat Kuitansi / Invoice
                 </x-button>
+                @if(! $rental->hasReviewed())
+                    <x-button variant="outline" size="md" href="{{ route('tenant.reviews.create', $rental) }}">
+                        ⭐ Tulis Ulasan
+                    </x-button>
+                @endif
                 <x-button variant="primary" size="md" href="{{ route('tenant.issues.create', ['rental_id' => $rental->id]) }}">
                     Lapor Keluhan Kamar
                 </x-button>

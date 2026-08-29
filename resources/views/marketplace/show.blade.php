@@ -215,7 +215,61 @@
                     </div>
                 </x-card>
             </div>
-        </div>
+
+            <!-- Reviews & Ratings Section -->
+            <div class="space-y-6 pt-6 border-t border-slate-200" id="reviews">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Ulasan & Penilaian Penghuni</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Pengalaman tinggal nyata dari penyewa yang telah menempati properti ini.</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-2xl">
+                        <span class="text-amber-500 text-lg">★</span>
+                        <span class="text-sm font-black text-slate-900">{{ number_format($property->average_rating, 1) }}</span>
+                        <span class="text-[11px] text-slate-500">({{ $property->reviews_count }} ulasan)</span>
+                    </div>
+                </div>
+
+                @if($property->approvedReviews->isEmpty())
+                    <div class="p-8 text-center bg-slate-50 rounded-3xl border border-slate-100 text-xs text-slate-400 space-y-1">
+                        <p class="font-bold text-slate-600">Belum Ada Ulasan</p>
+                        <p>Jadilah penyewa pertama yang memberikan ulasan untuk properti ini!</p>
+                    </div>
+                @else
+                    <div class="space-y-4">
+                        @foreach($property->approvedReviews as $review)
+                            <x-card class="p-6 space-y-3">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="flex items-center gap-3">
+                                        <x-avatar :name="$review->tenant->name" size="md" />
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-900">{{ $review->tenant->name }}</h4>
+                                            <p class="text-[11px] text-slate-400">Penyewa kamar {{ $review->unit->name }} &bull; {{ $review->created_at->format('d M Y') }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-0.5 text-amber-400 text-xs">
+                                        {{ str_repeat('★', $review->rating) }}
+                                    </div>
+                                </div>
+
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                    "{{ $review->comment }}"
+                                </p>
+
+                                @if($review->owner_reply)
+                                    <div class="pl-4 border-l-2 border-emerald-500 bg-emerald-50/60 p-3 rounded-r-2xl space-y-1 text-xs">
+                                        <div class="flex items-center justify-between text-[11px] font-bold text-emerald-800">
+                                            <span>Tanggapan Pemilik ({{ $property->owner->name }}):</span>
+                                            <span class="text-slate-400 font-normal">{{ $review->owner_replied_at?->format('d M Y') }}</span>
+                                        </div>
+                                        <p class="text-slate-700">{{ $review->owner_reply }}</p>
+                                    </div>
+                                @endif
+                            </x-card>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
 
         <!-- Right Col: Booking Sticky Sidebar -->
         <div class="space-y-6">
