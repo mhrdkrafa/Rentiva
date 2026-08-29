@@ -40,12 +40,26 @@ class CmsService
     public function featuredProperties(int $limit = 6): Collection
     {
         return Cache::remember('cms_featured_properties_' . $limit, 1800, function () use ($limit) {
-            return Property::where('status', PropertyStatus::PUBLISHED)
+            $featured = Property::where('status', PropertyStatus::PUBLISHED)
                 ->where('verification_status', VerificationStatus::VERIFIED)
-                ->where('is_featured', true)
+                ->where('featured', true)
                 ->with(['coverImage', 'location', 'propertyType', 'units.pricePlans'])
                 ->limit($limit)
                 ->get();
+
+            if ($featured->count() < $limit) {
+                $additional = Property::where('status', PropertyStatus::PUBLISHED)
+                    ->where('verification_status', VerificationStatus::VERIFIED)
+                    ->whereNotIn('id', $featured->pluck('id'))
+                    ->with(['coverImage', 'location', 'propertyType', 'units.pricePlans'])
+                    ->latest('published_at')
+                    ->limit($limit - $featured->count())
+                    ->get();
+
+                $featured = $featured->concat($additional);
+            }
+
+            return $featured;
         });
     }
 
