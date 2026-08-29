@@ -94,13 +94,13 @@
 - [x] Statistics.
 
 ## Phase 8 — Messaging
-- [ ] Conversations.
-- [ ] Participants.
-- [ ] Messages.
-- [ ] Read status.
-- [ ] Attachment validation.
-- [ ] Authorization tests.
-- [ ] Notifications.
+- [x] Conversations.
+- [x] Participants.
+- [x] Messages.
+- [x] Read status.
+- [x] Attachment validation.
+- [x] Authorization tests.
+- [x] Notifications.
 
 ## Phase 9 — CMS
 - [ ] Website settings.

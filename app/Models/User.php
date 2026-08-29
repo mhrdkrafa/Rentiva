@@ -109,6 +109,27 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(RentalIssue::class, 'tenant_id');
     }
 
+    public function conversations(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants')
+            ->withPivot('last_read_at')
+            ->withTimestamps()
+            ->orderByDesc('last_message_at');
+    }
+
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function unreadConversationsCount(): int
+    {
+        return $this->conversations()
+            ->get()
+            ->filter(fn ($conv) => $conv->isUnreadFor($this))
+            ->count();
+    }
+
     /**
      * Determine if the user can access a given Filament panel.
      */

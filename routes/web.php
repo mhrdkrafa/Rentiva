@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Marketplace\PropertyController as PublicPropertyController;
+use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\Owner\AvailabilityController as OwnerAvailabilityController;
 use App\Http\Controllers\Owner\BookingController as OwnerBookingController;
 use App\Http\Controllers\Owner\DashboardController as OwnerDashboardController;
@@ -29,6 +30,14 @@ Route::get('/properties', [PublicPropertyController::class, 'index'])->name('pro
 Route::get('/properties/{slug}', [PublicPropertyController::class, 'show'])->name('properties.show');
 Route::get('/search', [PublicPropertyController::class, 'index'])->name('search');
 
+// In-Platform Messaging Routes
+Route::prefix('messages')->name('messages.')->group(function () {
+    Route::get('/', [MessagingController::class, 'index'])->name('index');
+    Route::post('/start', [MessagingController::class, 'start'])->name('start');
+    Route::get('/{conversation}', [MessagingController::class, 'show'])->name('show');
+    Route::post('/{conversation}/send', [MessagingController::class, 'send'])->name('send');
+});
+
 // Tenant Routes
 Route::prefix('tenant')->name('tenant.')->group(function () {
     Route::get('/dashboard', [TenantDashboardController::class, 'index'])->name('dashboard');
@@ -56,6 +65,9 @@ Route::prefix('tenant')->name('tenant.')->group(function () {
     Route::get('/issues/create', [TenantIssueController::class, 'create'])->name('issues.create');
     Route::post('/issues', [TenantIssueController::class, 'store'])->name('issues.store');
     Route::get('/issues/{issue}', [TenantIssueController::class, 'show'])->name('issues.show');
+
+    // Messaging Shortcut
+    Route::get('/messages', [MessagingController::class, 'index'])->name('messages');
 });
 
 // Owner Routes
@@ -105,4 +117,7 @@ Route::prefix('owner')->name('owner.')->group(function () {
 
     // Statistics & Performance
     Route::get('/statistics', [OwnerStatisticsController::class, 'index'])->name('statistics');
+
+    // Messaging Shortcut
+    Route::get('/messages', [MessagingController::class, 'index'])->name('messages');
 });
