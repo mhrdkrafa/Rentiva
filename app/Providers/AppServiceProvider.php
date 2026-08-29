@@ -16,6 +16,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(\App\Contracts\PaymentGatewayInterface::class, function () {
             return new \App\Services\Payment\MockPaymentGateway();
         });
+
+        $this->app->bind(
+            \Filament\Auth\Http\Responses\Contracts\LogoutResponse::class,
+            \App\Http\Responses\FilamentLogoutResponse::class
+        );
     }
 
     /**

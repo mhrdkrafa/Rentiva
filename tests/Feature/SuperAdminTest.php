@@ -34,3 +34,15 @@ test('rentiva super-admin command creates new super admin', function () {
         ->and($admin->role)->toBe(UserRole::SUPER_ADMIN)
         ->and(Hash::check('secret12345', $admin->password))->toBeTrue();
 });
+
+test('admin logout redirects directly to landing page', function () {
+    $superAdmin = User::factory()->create([
+        'role' => UserRole::SUPER_ADMIN,
+        'status' => UserStatus::ACTIVE,
+    ]);
+
+    $response = $this->actingAs($superAdmin)->post('/admin/logout');
+
+    $response->assertRedirect('/');
+    $this->assertGuest();
+});
